@@ -1,0 +1,28 @@
+<div class="grafo-container" style="padding: 20px; max-width: 600px; margin: auto;">
+  <h2>Grafo</h2>
+
+  <mat-form-field appearance="fill" style="width: 100%; margin-bottom: 16px;">
+    <mat-label>Escolher arquivo JSON</mat-label>
+    <input matInput type="file" (change)="onFileSelected($event)" accept=".json" />
+  </mat-form-field>
+
+  <div class="inputs-local" style="display: flex; gap: 16px; margin-bottom: 16px;">
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Local de Início</mat-label>
+      <input matInput type="text" [(ngModel)]="startNode" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Local de Fim</mat-label>
+      <input matInput type="text" [(ngModel)]="endNode" />
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="primary" (click)="resolverGrafo()" style="margin-bottom: 16px;">
+    Resolver
+  </button>
+
+  <mat-card class="grafo-canvas" style="height: 400px; display: flex; justify-content: center; align-items: center; border: 1px solid #ccc;">
+    <p style="color: #888;">Grafo será exibido aqui</p>
+  </mat-card>
+</div>
