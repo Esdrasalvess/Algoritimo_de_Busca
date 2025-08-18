@@ -1,0 +1,43 @@
+{
+  "noInicio" : "no_A",
+  "noFim" : "no_L",
+  "custoTotal" : 525,
+  "caminhoPassoAPasso" : [ {
+
+    "de" : "no_A",
+    "para" : "no_B",
+    "custo" : 70,
+    "coordDe" : [ 0, 0 ],
+    "coordPara" : [ 100, 0 ]
+  }, {
+    "de" : "no_B",
+    "para" : "no_E",
+    "custo" : 45,
+    "coordDe" : [ 100, 0 ],
+    "coordPara" : [ 400, 0 ]
+  }, {
+    "de" : "no_E",
+    "para" : "no_G",
+    "custo" : 100,
+    "coordDe" : [ 400, 0 ],
+    "coordPara" : [ 600, 0 ]
+  }, {
+    "de" : "no_G",
+    "para" : "no_H",
+    "custo" : 200,
+    "coordDe" : [ 600, 0 ],
+    "coordPara" : [ 700, 0 ]
+  }, {
+    "de" : "no_H",
+    "para" : "no_I",
+    "custo" : 50,
+    "coordDe" : [ 700, 0 ],
+    "coordPara" : [ 800, 0 ]
+  }, {
+    "de" : "no_I",
+    "para" : "no_L",
+    "custo" : 60,
+    "coordDe" : [ 800, 0 ],
+    "coordPara" : [ 100, 100 ]
+  } ]
+}
