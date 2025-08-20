@@ -1,0 +1,26 @@
+<div class="grafo-container">
+  <div
+    class="drop-zone"
+    [class.drag-over]="isDragOver"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+  >
+    <p *ngIf="!selectedFile">Arraste um arquivo JSON aqui ou clique para selecionar</p>
+    <p *ngIf="selectedFile">Arquivo: {{ selectedFileName }}</p>
+    <input type="file" (change)="onFileSelected($event)">
+    <button *ngIf="selectedFile" (click)="removeFile()">Remover arquivo</button>
+  </div>
+
+  <div class="nodes-input">
+    <input placeholder="Nodo Inicial" [(ngModel)]="startNode">
+    <input placeholder="Nodo Final" [(ngModel)]="endNode">
+    <button (click)="resolverGrafo()">Resolver</button>
+  </div>
+<div *ngIf="caminhoResolvido.length > 0">
+  <h3>Caminho resolvido:</h3>
+  <p>{{ caminhoResolvido.join(' → ') }}</p>
+</div>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>
