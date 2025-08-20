@@ -22,6 +22,9 @@ export class GrafoComponent {
   selectedFileName: string | null = null;
   isDragOver = false;
   errorMessage: string | null = null;
+  caminhoPassoAPasso: { de: string, para: string, custo: number }[] = [];
+  custoTotal: number | null = null;
+
 
   // Drag & Drop
   onDragOver(event: DragEvent) {
@@ -122,51 +125,37 @@ export class GrafoComponent {
     return path;
   }
 
-resolverGrafo() {
+async resolverGrafo() {
   if (!this.grafoData || !this.startNode || !this.endNode) return;
 
-  const graph = this.grafoData;
-  const distances: Record<string, number> = {};
-  const previous: Record<string, string | null> = {};
-  const nodes = new Set(Object.keys(graph));
+  try {
+    const response = await fetch('http://localhost:8080/labirinto/resolver-com-json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        grafo: this.grafoData,
+        origem: this.startNode,   // <--- alterado
+        destino: this.endNode     // <--- alterado
+      })
+    });
 
-  // Inicialização
-  nodes.forEach(node => {
-    distances[node] = Infinity;
-    previous[node] = null;
-  });
-  distances[this.startNode] = 0;
-
-  while (nodes.size > 0) {
-    // Escolher o nó com menor distância
-    const currentNode = Array.from(nodes).reduce((minNode, node) =>
-      distances[node] < distances[minNode] ? node : minNode
-    , Array.from(nodes)[0]);
-
-    nodes.delete(currentNode);
-
-    if (currentNode === this.endNode) break;
-
-    // Atualizar distâncias dos vizinhos
-    for (const [neighbor, weight] of Object.entries(graph[currentNode])) {
-      const alt = distances[currentNode] + (weight as number);
-      if (alt < distances[neighbor]) {
-        distances[neighbor] = alt;
-        previous[neighbor] = currentNode;
-      }
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  }
 
-  // Reconstruir caminho
-  const path: string[] = [];
-  let current = this.endNode;
-  while (current) {
-    path.unshift(current);
-    current = previous[current]!;
-  }
+    const data = await response.json();
 
-  this.caminhoResolvido = path;
-  console.log('Caminho mínimo:', this.caminhoResolvido);
+    this.caminhoPassoAPasso = data.caminhoPassoAPasso;
+    this.custoTotal = data.custoTotal;
+
+  } catch (err) {
+    console.error('Erro ao chamar o backend:', err);
+    this.caminhoPassoAPasso = [];
+    this.custoTotal = null;
+  }
 }
+
+
+
 
 }

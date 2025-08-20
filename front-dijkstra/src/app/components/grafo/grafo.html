@@ -17,10 +17,16 @@
     <input placeholder="Nodo Final" [(ngModel)]="endNode">
     <button (click)="resolverGrafo()">Resolver</button>
   </div>
-<div *ngIf="caminhoResolvido.length > 0">
+<div *ngIf="caminhoPassoAPasso.length > 0">
   <h3>Caminho resolvido:</h3>
-  <p>{{ caminhoResolvido.join(' → ') }}</p>
+  <ul>
+    <li *ngFor="let passo of caminhoPassoAPasso">
+      {{ passo.de }} → {{ passo.para }} (custo: {{ passo.custo }})
+    </li>
+  </ul>
+  <p><strong>Custo total:</strong> {{ custoTotal }}</p>
 </div>
+
 
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 </div>
