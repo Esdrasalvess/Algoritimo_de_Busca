@@ -1,7 +1,8 @@
 // src/app/components/grafo/grafo.ts
-import { Component } from '@angular/core';
+import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'; // para *ngIf, *ngFor
 import { FormsModule } from '@angular/forms';   // para [(ngModel)]
+import { GrafoRoutes } from './grafo.routes';
 
 @Component({
   selector: 'app-grafo',
@@ -23,8 +24,15 @@ export class GrafoComponent {
   isDragOver = false;
   errorMessage: string | null = null;
   caminhoPassoAPasso: { de: string, para: string, custo: number }[] = [];
-  custoTotal: number | null = null;
+  custoTotal: number | null = null; 
+  private grafoViwe!: GraphVisualizer;
+  @ViewChild('canvasContainer', { static: true }) canvasContainer!: ElementRef;
 
+
+  constructor(
+    private grafoRoutes: GrafoRoutes,
+        @Inject(PLATFORM_ID) private platformId: Object
+  ){};
 
   // Drag & Drop
   onDragOver(event: DragEvent) {
@@ -82,80 +90,49 @@ export class GrafoComponent {
     this.errorMessage = null;
   }
 
-  // Algoritmo Dijkstra
-  dijkstra(grafo: any, inicio: string, fim: string): string[] {
-    const dist: Record<string, number> = {};
-    const prev: Record<string, string | null> = {};
-    const nodes = new Set<string>(Object.keys(grafo));
+  resolverGrafo() {
+    if (!this.grafoData || !this.startNode || !this.endNode) return;
 
-    for (const node of nodes) {
-      dist[node] = Infinity;
-      prev[node] = null;
-    }
-    dist[inicio] = 0;
+    const payload = {
+      grafo: this.grafoData,
+      origem: this.startNode,
+      destino: this.endNode
+    };
 
-    while (nodes.size > 0) {
-      let minNode: string | null = null;
-      for (const node of nodes) {
-        if (minNode === null || dist[node] < dist[minNode]) {
-          minNode = node;
-        }
+    this.grafoRoutes.resolverComArquivo(payload).subscribe({
+      next: (data) => {
+        this.caminhoPassoAPasso = data.caminhoPassoAPasso;
+        this.custoTotal = data.custoTotal;
+      },
+      error: (err) => {
+        console.error('Erro ao chamar o backend:', err);
+        this.caminhoPassoAPasso = [];
+        this.custoTotal = null;
       }
-
-      if (minNode === null || dist[minNode] === Infinity) break;
-      nodes.delete(minNode);
-
-      for (const [vizinho, peso] of Object.entries(grafo[minNode])) {
-        const alt = dist[minNode] + (peso as number);
-        if (alt < dist[vizinho]) {
-          dist[vizinho] = alt;
-          prev[vizinho] = minNode;
-        }
-      }
-    }
-
-    const path: string[] = [];
-    let u: string | null = fim;
-    while (u) {
-      path.unshift(u);
-      u = prev[u];
-    }
-
-    if (path[0] !== inicio) return [];
-    return path;
-  }
-
-async resolverGrafo() {
-  if (!this.grafoData || !this.startNode || !this.endNode) return;
-
-  try {
-    const response = await fetch('http://localhost:8080/labirinto/resolver-com-json', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        grafo: this.grafoData,
-        origem: this.startNode,   // <--- alterado
-        destino: this.endNode     // <--- alterado
-      })
     });
+  }
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+  gerarLabirinto(){
+    const canvas = document.createElement("canvas");
+    canvas.width = 1000;
+    canvas.height = 800;
+    document.body.appendChild(canvas);
+    this.grafoRoutes.getLabirinto().subscribe({
+      next: (data) => {
+        console.log(data)
+        this.grafoData = data
+      this.grafoViwe = new GraphVisualizer(canvas, data);
+      this.grafoViwe.render(); 
 
-    const data = await response.json();
-
-    this.caminhoPassoAPasso = data.caminhoPassoAPasso;
-    this.custoTotal = data.custoTotal;
-
-  } catch (err) {
-    console.error('Erro ao chamar o backend:', err);
-    this.caminhoPassoAPasso = [];
-    this.custoTotal = null;
+      }, error: (err) => {
+        console.error("Deu errado os carais aí", err)
+        this.caminhoPassoAPasso = [];
+        this.custoTotal = null;
+      }
+    })
   }
 }
 
 
 
 
-}

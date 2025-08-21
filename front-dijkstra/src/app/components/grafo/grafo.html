@@ -11,6 +11,9 @@
     <input type="file" (change)="onFileSelected($event)">
     <button *ngIf="selectedFile" (click)="removeFile()">Remover arquivo</button>
   </div>
+  <div class="getLabirinto">
+    <button (click)="gerarLabirinto()">Labirinto Aleatório</button>
+  </div>
 
   <div class="nodes-input">
     <input placeholder="Nodo Inicial" [(ngModel)]="startNode">
@@ -26,6 +29,7 @@
   </ul>
   <p><strong>Custo total:</strong> {{ custoTotal }}</p>
 </div>
+<div #canvasContainer></div>
 
 
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
