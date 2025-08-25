@@ -7,7 +7,7 @@ import { GrafoComponent } from './components/grafo/grafo';
   standalone: true,
   imports: [GrafoComponent],
   template: `
-    <h1>Algoritmo de Busca - Dijkstra</h1>
+    <h1 style="text-align: center; margin-top: 1rem;">Algoritmo de Busca - Dijkstra</h1>
     <app-grafo></app-grafo>
   `,
 })
