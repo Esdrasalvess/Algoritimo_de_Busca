@@ -16,8 +16,24 @@
   </div>
 
   <div class="nodes-input">
-    <input placeholder="Nodo Inicial" [(ngModel)]="startNode">
-    <input placeholder="Nodo Final" [(ngModel)]="endNode">
+  <div>
+    <label for="startNodeInput">Nó Inicial:</label>
+    <input 
+      id="startNodeInput" 
+      type="text"
+      [(ngModel)]="startNode"
+      [placeholder]="startNodePlaceholder">
+  </div>
+
+  <div>
+    <label for="endNodeInput">Nó Final:</label>
+    <input 
+      id="endNodeInput" 
+      type="text" 
+      [(ngModel)]="endNode"
+      [placeholder]="endNodePlaceholder"
+      [disabled]="!startNode"> 
+  </div>
     <button (click)="resolverGrafo()">Resolver</button>
   </div>
 <div *ngIf="caminhoPassoAPasso.length > 0">
@@ -29,8 +45,15 @@
   </ul>
   <p><strong>Custo total:</strong> {{ custoTotal }}</p>
 </div>
-<div #canvasContainer></div>
-
-
-  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+<div *ngIf="grafoData">
+  <button (click)="animarCaminho()">Iniciar Animação do Caminho</button>
+  <button (click)="resetar()">Resetar Animação</button>
 </div>
+</div>
+<app-graph 
+  [adjacencyData]="grafoData"
+  (graphReady)="onGraphReady()"
+  (nodeClicked)="onNodeSelected($event)">
+</app-graph>
+
