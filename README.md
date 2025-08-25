@@ -1,38 +1,75 @@
 # Simulador de Algoritmo de Busca - Dijkstra
 
-Este projeto é um ambiente de simulação para estudar e aplicar algoritmos de busca em grafos, desenvolvido como parte da atividade prática do Bloco Formativo 2 da disciplina de Inteligência Artificial.  
+Este projeto é um ambiente de simulação para estudo e aplicação de algoritmos de busca em grafos, desenvolvido como parte da atividade prática do Bloco Formativo 2 da disciplina de Inteligência Artificial.  
 
-O foco principal foi a implementação do **algoritmo de Dijkstra**, também conhecido como busca de custo uniforme, garantindo sempre o menor caminho em termos de custo acumulado.
+O foco principal do projeto foi a implementação do **algoritmo de Dijkstra**, também conhecido como busca de custo uniforme, que garante sempre o caminho de menor custo entre dois nós em um grafo.
 
 ---
 
-## 🔹 Estrutura do Projeto
+## 🔹 Objetivo do Projeto
 
-O sistema foi dividido em **backend** e **frontend**, tornando a aplicação modular e fácil de entender:
+O objetivo desta atividade foi criar um ambiente completo e modular que permitisse:
+
+- Testar e visualizar algoritmos de busca em grafos.
+- Trabalhar com grafos dinâmicos carregados de arquivos JSON.
+- Oferecer uma API que permita a conexão com qualquer frontend ou sistema externo.
+- Mostrar o caminho passo a passo, o custo total e animar visualmente os resultados.
+  
+O algoritmo de Dijkstra foi escolhido por sua relevância prática e capacidade de encontrar sempre a solução ótima em termos de custo acumulado, sendo uma base sólida para futuras implementações de outros algoritmos de busca.
+
+---
+
+## 🔹 Estrutura do Sistema
+
+O sistema foi dividido em **backend** e **frontend**, de forma modular e escalável.
 
 ### Backend
-- **Linguagem:** Java  
-- **Framework:** Spring Boot  
-- **Função:** Recebe arquivos JSON que representam grafos, executa o algoritmo de busca e retorna os resultados via API REST.  
-- **Estrutura de pastas:**
-  - `biblioteca/` - Classes principais (`Grafo`, `Dijkstra`, `ResultadoBusca`, etc.).
-  - `entrada/` - Arquivos JSON com os grafos.
-  - `controller/` - Controladores Spring que expõem as rotas da API (`LabirintoController`).
+
+- **Linguagem:** Java 17  
+- **Framework:** Spring Boot 3.5.4  
+- **Função:** Recebe grafos em JSON, executa o algoritmo de busca e retorna os resultados via API REST.
+
+#### Estrutura de pastas:
+
+- **Rota `/labirinto` (GET)**: Retorna o grafo carregado.  
+- **Rota `/labirinto/resolver` (POST)**: Recebe nós inicial e final e retorna o caminho ótimo com base no grafo atual.  
+- **Rota `/labirinto/resolver-com-json` (POST)**: Recebe um grafo JSON customizado e retorna o caminho ótimo.
+
+Essa estrutura permite que o backend funcione como uma **API modular**, que pode ser consumida por qualquer frontend ou sistema que envie JSONs compatíveis.
+
+---
 
 ### Frontend
+
 - **Linguagem:** TypeScript  
-- **Framework:** Angular  
-- **Função:** Interface gráfica interativa que consome a API, permite upload de arquivos JSON, seleção de nós inicial e final, e visualiza os resultados da busca.
-- **Componentes principais:**
-  - `grafo` - Formulário de upload, seleção de nós e botões de controle.
-  - `graph` - Visualização do grafo com animação do caminho encontrado.
+- **Framework:** Angular 17  
+- **Função:** Interface gráfica interativa que permite:
+  - Upload de arquivos JSON contendo grafos.
+  - Seleção de nós inicial e final.
+  - Exibição do caminho passo a passo.
+  - Animação do caminho encontrado.
+  - Reset da animação.
+
+#### Estrutura de pastas:
+
+
+- O frontend consome a API de forma genérica, permitindo que qualquer aplicação compatível com JSON utilize o backend.
+
+---
 
 ### Arquivos de Entrada
-- Os grafos são representados em **JSON**, facilitando a leitura e alteração dos dados.
-- Estrutura do JSON:
-```json
+
+Os grafos são representados em JSON, o que facilita:
+
+- Alterar e testar diferentes cenários de busca.
+- Mapear a estrutura de nós e arestas de forma clara.
+
+**Exemplo de JSON:**
+
 {
   "Arad": { "Zerind": 75, "Timisoara": 118, "Sibiu": 140 },
   "Bucareste": { "Fagaras": 211, "Pitesti": 101 }
 }
 
+## Fluxo sistema 
+[Arquivo JSON] → [Backend Java / Spring Boot] → [Algoritmo Dijkstra] → [API REST] → [Frontend Angular] → [Usuário]
