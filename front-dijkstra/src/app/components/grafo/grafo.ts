@@ -1,4 +1,3 @@
-// src/app/components/grafo/grafo.ts
 import { Component, ElementRef, Inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common'; // para *ngIf, *ngFor
 import { FormsModule } from '@angular/forms';   // para [(ngModel)]
@@ -115,25 +114,36 @@ export class GrafoComponent {
     });
   }
 
-  gerarLabirinto() {
-    this.carregando = true;
-    this.grafoData = null; 
+  // grafo.ts
+gerarLabirinto() {
+  this.carregando = true;
 
-    this.grafoRoutes.getLabirinto().subscribe({
-      next: (data) => {
-        this.grafoData = data; 
-        this.carregando = false;
-      },
-      error: (err) => {
-        console.error("Ocorreu um erro ao buscar o labirinto", err);
-        this.carregando = false;
+  
+  this.grafoData = this.gerarGrafoAleatorio(10); 
+  this.carregando = false;
+}
+
+private gerarGrafoAleatorio(n: number = 10): any {
+  const grafo: any = {};
+  const nodes = Array.from({length: n}, (_, i) => `N${i+1}`);
+
+  nodes.forEach(node => {
+    grafo[node] = {};
+    nodes.forEach(target => {
+      if (node !== target && Math.random() > 0.5) {
+        grafo[node][target] = Math.floor(Math.random() * 10) + 1; // custo 1-10
       }
     });
-  }
-    onGraphReady(): void {
+  });
+
+  return grafo;
+}
+
+
+  onGraphReady(): void {
     this.isGraphReady = true;
   }
-
+  
   animarCaminho() {
     if (this.graphComponent && this.caminhoPassoAPasso.length > 0) {
       

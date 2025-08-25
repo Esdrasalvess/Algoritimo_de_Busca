@@ -131,6 +131,8 @@ export class GraphComponent implements OnChanges {
       this.graphReady.emit(true);
     }, 100);
     });
+
+    
   }
   
   private drag(simulation: d3.Simulation<any, any>) {
@@ -193,4 +195,5 @@ export class GraphComponent implements OnChanges {
     this.svg.selectAll('.path-node, .start-node, .end-node').classed('path-node start-node end-node', false);
     this.svg.selectAll('.path-link').classed('path-link', false);
   }
+  
 }

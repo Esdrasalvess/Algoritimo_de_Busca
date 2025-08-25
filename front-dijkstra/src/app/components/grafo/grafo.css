@@ -1,19 +1,17 @@
-/* Container principal do grafo */
 .grafo-container {
   padding: 1rem;
   border: 1px solid #ccc;
-  width: 90%;           /* ocupa mais espaço da tela, mas respeita margens */
-  max-width: 800px;     /* não estica demais em telas grandes */
-  margin: 2rem auto;    /* centraliza horizontalmente */
+  width: 90%;           
+  max-width: 800px;     
+  margin: 2rem auto;    
   font-family: Arial, sans-serif;
 
   display: flex;
-  flex-direction: column; /* empilha os elementos verticalmente */
-  align-items: center;    /* centraliza horizontalmente */
-  justify-content: flex-start; /* mantém os elementos do topo */
+  flex-direction: column; 
+  align-items: center;    
+  justify-content: flex-start;
 }
 
-/* Área de drop do arquivo JSON */
 .drop-zone {
   padding: 1rem;
   border: 2px dashed #aaa;
@@ -28,7 +26,6 @@
   border-color: #007bff;
 }
 
-/* Inputs de nós inicial e final */
 .nodes-input {
   width: 100%;
   display: flex;
@@ -55,20 +52,17 @@
   box-sizing: border-box;
 }
 
-/* Botões */
 button {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
-/* Mensagens de erro */
 .error {
   color: red;
   margin-top: 0.5rem;
 }
 
-/* Container do SVG do grafo */
 app-graph {
   width: 100%;
   display: flex;
@@ -77,7 +71,6 @@ app-graph {
   margin-top: 1rem;
 }
 
-/* Lista de passos */
 ul {
   padding-left: 1.5rem;
 }
