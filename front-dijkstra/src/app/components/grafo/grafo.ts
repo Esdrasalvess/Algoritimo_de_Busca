@@ -114,7 +114,7 @@ export class GrafoComponent {
     });
   }
 
-  // grafo.ts
+ 
 gerarLabirinto() {
   this.carregando = true;
 
@@ -127,17 +127,32 @@ private gerarGrafoAleatorio(n: number = 10): any {
   const grafo: any = {};
   const nodes = Array.from({length: n}, (_, i) => `N${i+1}`);
 
+
   nodes.forEach(node => {
     grafo[node] = {};
+  });
+
+
+  for (let i = 0; i < nodes.length - 1; i++) {
+    const peso = Math.floor(Math.random() * 10) + 1;
+    grafo[nodes[i]][nodes[i+1]] = peso;
+    grafo[nodes[i+1]][nodes[i]] = peso; 
+  }
+
+  
+  nodes.forEach(node => {
     nodes.forEach(target => {
-      if (node !== target && Math.random() > 0.5) {
-        grafo[node][target] = Math.floor(Math.random() * 10) + 1; // custo 1-10
+      if (node !== target && !grafo[node][target] && Math.random() > 0.5) {
+        const peso = Math.floor(Math.random() * 10) + 1;
+        grafo[node][target] = peso;
+        grafo[target][node] = peso; 
       }
     });
   });
 
   return grafo;
 }
+
 
 
   onGraphReady(): void {
