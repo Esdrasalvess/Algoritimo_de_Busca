@@ -1,32 +1,36 @@
-# Dockerfile simples e confiável para Railway
+# Dockerfile para aplicação Angular
+# Estágio 1: Build da aplicação
 FROM node:20-alpine AS build
 
+# Define o diretório de trabalho
 WORKDIR /app
+
+# Copia os arquivos de dependências
 COPY package*.json ./
+
+# Instala todas as dependências (incluindo devDependencies para o build)
 RUN npm ci
+
+# Copia todo o código fonte
 COPY . .
+
+# Build da aplicação para produção
 RUN npm run build
 
+# Estágio 2: Servir a aplicação com Nginx
 FROM nginx:alpine
 
-# Remove configuração padrão
-RUN rm /etc/nginx/conf.d/default.conf
+# Remove a configuração padrão do Nginx
+RUN rm -rf /usr/share/nginx/html/*
 
-# Copia arquivos buildados
+# Copia os arquivos buildados do estágio anterior (ajustando o caminho)
 COPY --from=build /app/dist/front-dijkstra/browser /usr/share/nginx/html
 
-# Cria configuração nginx que funciona com Railway
-RUN echo 'server {' > /etc/nginx/conf.d/default.conf && \
-    echo '    listen 8080;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    server_name localhost;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    root /usr/share/nginx/html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    index index.html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    location / {' >> /etc/nginx/conf.d/default.conf && \
-    echo '        try_files $uri $uri/ /index.html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '    }' >> /etc/nginx/conf.d/default.conf && \
-    echo '    error_page 404 /index.html;' >> /etc/nginx/conf.d/default.conf && \
-    echo '}' >> /etc/nginx/conf.d/default.conf
+# Copia configuração customizada do Nginx (opcional, mas recomendada)
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 8080
+# Expõe a porta 80
+EXPOSE 80
 
+# Comando para iniciar o Nginx
 CMD ["nginx", "-g", "daemon off;"]
