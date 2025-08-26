@@ -1,0 +1,37 @@
+# Dependências
+node_modules
+npm-debug.log*
+
+# Diretórios de build
+dist
+.angular
+
+# IDEs
+.vscode
+.idea
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Testes
+coverage
+.nyc_output
+
+# Temporários
+*.tmp
+*.temp
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Arquivos de ambiente local
+.env.local
