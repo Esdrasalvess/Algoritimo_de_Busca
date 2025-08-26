@@ -4,6 +4,15 @@ Este projeto é um ambiente de simulação para estudo e aplicação de algoritm
 
 O foco principal do projeto foi a implementação do **algoritmo de Dijkstra**, também conhecido como busca de custo uniforme, que garante sempre o caminho de menor custo entre dois nós em um grafo.
 
+1º Maria Letícia Almeida Gonçalves
+Vitória da Conquista , Bahia
+leticiaw.g.a@gmail.com
+
+2º Esdrás Alves dos Santos
+Vitória da Conquista , Bahia
+esdrasalvesdossantos2002@gmail.com
+
+
 ---
 
 ## 🔹 Objetivo do Projeto
