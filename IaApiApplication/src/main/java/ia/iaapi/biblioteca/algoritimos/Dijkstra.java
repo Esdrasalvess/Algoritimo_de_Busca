@@ -2,7 +2,6 @@ package ia.iaapi.biblioteca.algoritimos;
 
 
 import ia.iaapi.biblioteca.Grafo;
-
 import java.util.*;
 
 public class Dijkstra {
@@ -16,52 +15,50 @@ public class Dijkstra {
         Map<String, Integer> dist = new HashMap<>();
         Map<String, String> anterior = new HashMap<>();
         Set<String> visitado = new HashSet<>();
+        int nosExpandidos = 0;
 
-        //Começa todos os nós do carai (inclusive os que só aparecem como destino)
         for (String no : grafo.getNos()) {
             dist.put(no, Integer.MAX_VALUE);
             anterior.put(no, null);
         }
         dist.put(inicio, 0);
 
-        PriorityQueue<String> fila = new PriorityQueue<>(
-                Comparator.comparingInt(n -> dist.getOrDefault(n, Integer.MAX_VALUE))
-        );
+        PriorityQueue<String> fila = new PriorityQueue<>(Comparator.comparingInt(dist::get));
         fila.add(inicio);
 
         while (!fila.isEmpty()) {
             String atual = fila.poll();
-            if (!visitado.add(atual)) continue;
+            nosExpandidos++; // AQCÁ INCREMENTA O CONTADOR
+
             if (atual.equals(destino)) break;
+            if (!visitado.add(atual)) continue;
 
-            for (Map.Entry<String, Integer> viz : grafo.getVizinhos(atual).entrySet()) {
-                String v = viz.getKey();
-                int w = viz.getValue();
 
-                int custoAtual = dist.getOrDefault(atual, Integer.MAX_VALUE);
-                if (custoAtual == Integer.MAX_VALUE) continue;
+            for (Map.Entry<String, Integer> vizinhoEntry : grafo.getVizinhos(atual).entrySet()) {
+                String vizinho = vizinhoEntry.getKey();
+                int pesoAresta = vizinhoEntry.getValue();
+                int novaDist = dist.get(atual) + pesoAresta;
 
-                int novaDist = custoAtual + w;
-                if (novaDist < dist.getOrDefault(v, Integer.MAX_VALUE)) {
-                    dist.put(v, novaDist);
-                    anterior.put(v, atual);
-                    fila.add(v);
+                if (novaDist < dist.getOrDefault(vizinho, Integer.MAX_VALUE)) {
+                    dist.put(vizinho, novaDist);
+                    anterior.put(vizinho, atual);
+                    fila.add(vizinho);
                 }
             }
         }
 
-        // Refaz o caminho
         List<String> caminho = new ArrayList<>();
-        if (dist.getOrDefault(destino, Integer.MAX_VALUE) == Integer.MAX_VALUE) {
-            // sem caminho: retorna lista vazia e custo "infinito" (-1)
-            return new ResultadoBusca(caminho, -1);
+        if (anterior.get(destino) == null && !destino.equals(inicio)) {
+            return new ResultadoBusca(caminho, -1, nosExpandidos); // DEU RUIM AQUI, NUM TEM CAMINHO
         }
 
-        for (String no = destino; no != null; no = anterior.get(no)) {
-            caminho.add(no);
+        String noAtual = destino;
+        while (noAtual != null) {
+            caminho.add(noAtual);
+            noAtual = anterior.get(noAtual);
         }
         Collections.reverse(caminho);
 
-        return new ResultadoBusca(caminho, dist.get(destino));
+        return new ResultadoBusca(caminho, dist.get(destino), nosExpandidos);
     }
 }
