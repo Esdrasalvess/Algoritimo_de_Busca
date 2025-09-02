@@ -45,7 +45,7 @@ public class BuscaGulosa {
                 }
             }
         }
-        // Já sabe né, num encontrou o caminho 
+        // Já sabe né, num encontrou o caminho
         return new ResultadoBusca(Collections.emptyList(), -1, nosExpandidos);
     }
 
