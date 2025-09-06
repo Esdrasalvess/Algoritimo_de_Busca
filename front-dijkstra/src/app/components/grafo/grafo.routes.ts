@@ -12,7 +12,7 @@ interface payloadArquivo {
   providedIn: 'root'
 })
 export class GrafoRoutes {
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = 'https://back-production-c368.up.railway.app';
 
   constructor(private http: HttpClient) {}
 
