@@ -51,6 +51,12 @@
   width: 100%;
   box-sizing: border-box;
 }
+select {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
 
 button {
   margin-top: 0.5rem;

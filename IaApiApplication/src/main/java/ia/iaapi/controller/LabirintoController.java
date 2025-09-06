@@ -78,7 +78,6 @@ public class LabirintoController {
                     resultadoBusca = dijkstra.buscar(origem, destino);
                     break;
             }
-
             return ResponseEntity.ok(formatarResultado(grafoParaResolver, origem, destino, resultadoBusca));
 
         } catch (Exception e) {

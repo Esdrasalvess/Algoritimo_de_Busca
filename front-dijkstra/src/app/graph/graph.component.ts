@@ -33,14 +33,30 @@ export class GraphComponent implements OnChanges {
 
     for (const source in data) {
       nodeSet.add(source);
-      for (const target in data[source]) {
-        nodeSet.add(target);
-        if (source < target) {
+      
+      if (data[source].arestas) {
+        for (const target in data[source].arestas) {
+          nodeSet.add(target);
+          
+          if (source < target) {
             links.push({
-                source: source,
-                target: target,
-                distance: data[source][target]
+              source: source,
+              target: target,
+              distance: data[source].arestas[target]
             });
+          }
+        }
+      } else {
+        for (const target in data[source]) {
+          nodeSet.add(target);
+          
+          if (source < target) {
+            links.push({
+              source: source,
+              target: target,
+              distance: data[source][target]
+            });
+          }
         }
       }
     }

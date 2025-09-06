@@ -12,11 +12,12 @@
     <button *ngIf="selectedFile" (click)="removeFile()">Remover arquivo</button>
   </div>
   <div class="getLabirinto">
-  <button (click)="gerarLabirinto()">Labirinto Aleatório</button>
+  <button (click)="gerarLabirinto(false)">Labirinto Aleatório</button>
+  <button (click)="gerarLabirinto(true)">Labirinto Aleatório com heurística</button>
+  <div class="info-heuristica" *ngIf="comHeuristica" style="background: #e3f2fd; padding: 10px; margin: 10px 0; border-radius: 4px;">
+  {{ getInfoHeuristica() }}
+</div>
   </div>
-
-
-
   <div class="nodes-input">
   <div>
     <label for="startNodeInput">Nó Inicial:</label>
@@ -36,6 +37,13 @@
       [placeholder]="endNodePlaceholder"
       [disabled]="!startNode"> 
   </div>
+    <select [(ngModel)]="algoritmoBusca">
+    <option value="" disabled selected>Selecione a busca</option>
+    <option value="gulosa">Busca Gulosa</option>
+    <option value="a_estrela">Busca A* (A Estrela)</option>
+    <option value="a_estrela_ponderado">Busca A* Ponderado</option>
+    <option value="dijkstra">Busca Dijkstra</option>
+  </select>
     <button (click)="resolverGrafo()">Resolver</button>
   </div>
 <div *ngIf="caminhoPassoAPasso.length > 0">
