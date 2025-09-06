@@ -1,89 +1,59 @@
-# Simulador de Algoritmo de Busca - Dijkstra
+# FrontDijkstra
 
-Este projeto é um ambiente de simulação para estudo e aplicação de algoritmos de busca em grafos, desenvolvido como parte da atividade prática do Bloco Formativo 2 da disciplina de Inteligência Artificial.  
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.0.
 
-O foco principal do projeto foi a implementação do **algoritmo de Dijkstra**, também conhecido como busca de custo uniforme, que garante sempre o caminho de menor custo entre dois nós em um grafo.
+## Development server
 
-1º Maria Letícia Almeida Gonçalves
-Vitória da Conquista , Bahia
-leticiaw.g.a@gmail.com
+To start a local development server, run:
 
-2º Esdrás Alves dos Santos
-Vitória da Conquista , Bahia
-esdrasalvesdossantos2002@gmail.com
+```bash
+ng serve
+```
 
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
----
+## Code scaffolding
 
-## 🔹 Objetivo do Projeto
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-O objetivo desta atividade foi criar um ambiente completo e modular que permitisse:
+```bash
+ng generate component component-name
+```
 
-- Testar e visualizar algoritmos de busca em grafos.
-- Trabalhar com grafos dinâmicos carregados de arquivos JSON.
-- Oferecer uma API que permita a conexão com qualquer frontend ou sistema externo.
-- Mostrar o caminho passo a passo, o custo total e animar visualmente os resultados.
-  
-O algoritmo de Dijkstra foi escolhido por sua relevância prática e capacidade de encontrar sempre a solução ótima em termos de custo acumulado, sendo uma base sólida para futuras implementações de outros algoritmos de busca.
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
+```bash
+ng generate --help
+```
 
-## 🔹 Estrutura do Sistema
+## Building
 
-O sistema foi dividido em **backend** e **frontend**, de forma modular e escalável.
+To build the project run:
 
-### Backend
+```bash
+ng build
+```
 
-- **Linguagem:** Java 17  
-- **Framework:** Spring Boot 3.5.4  
-- **Função:** Recebe grafos em JSON, executa o algoritmo de busca e retorna os resultados via API REST.
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-#### Estrutura de pastas:
+## Running unit tests
 
-- **Rota `/labirinto` (GET)**: Retorna o grafo carregado.  
-- **Rota `/labirinto/resolver` (POST)**: Recebe nós inicial e final e retorna o caminho ótimo com base no grafo atual.  
-- **Rota `/labirinto/resolver-com-json` (POST)**: Recebe um grafo JSON customizado e retorna o caminho ótimo.
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
 
-Essa estrutura permite que o backend funcione como uma **API modular**, que pode ser consumida por qualquer frontend ou sistema que envie JSONs compatíveis.
+```bash
+ng test
+```
 
+## Running end-to-end tests
 
-### Frontend
+For end-to-end (e2e) testing, run:
 
-- **Linguagem:** TypeScript  
-- **Framework:** Angular 17  
-- **Função:** Interface gráfica interativa que permite:
-  - Upload de arquivos JSON contendo grafos.
-  - Seleção de nós inicial e final.
-  - Exibição do caminho passo a passo.
-  - Animação do caminho encontrado.
-  - Reset da animação.
+```bash
+ng e2e
+```
 
-#### Estrutura de pastas:
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Additional Resources
 
-- O frontend consome a API de forma genérica, permitindo que qualquer aplicação compatível com JSON utilize o backend.
-
-
-### Arquivos de Entrada
-
-Os grafos são representados em JSON, o que facilita:
-
-- Alterar e testar diferentes cenários de busca.
-- Mapear a estrutura de nós e arestas de forma clara.
-
-**Exemplo de JSON:**
-
-{
-  "Arad": { "Zerind": 75, "Timisoara": 118, "Sibiu": 140 },
-  "Zerind": { "Arad": 75, "Oradea": 71 },
-  "Oradea": { "Zerind": 71, "Sibiu": 151 },
-  "Timisoara": { "Arad": 118, "Lugoj": 111 },
-  "Lugoj": { "Timisoara": 111, "Mehadia": 70 },
-  "Mehadia": { "Lugoj": 70, "Drobeta": 75 },
-  "Drobeta": { "Mehadia": 75, "Craiova": 120 },
-}
-
-## Fluxo sistema 
-[Arquivo JSON] → [Backend Java / Spring Boot] → [Algoritmo Dijkstra] → [API REST] → [Frontend Angular] → [Usuário]
-
-## Sistema em produção
-https://front-production-dd9b.up.railway.app/
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
