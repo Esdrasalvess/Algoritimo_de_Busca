@@ -79,7 +79,21 @@ export class GrafoComponent {
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        this.grafoData = JSON.parse(reader.result as string);
+        const novoGrafoDoArquivo  = this.grafoData = JSON.parse(reader.result as string);
+        this.grafoData = novoGrafoDoArquivo;
+        
+        this.grafoBase = null; 
+        this.comHeuristica = false;
+
+        this.startNode = '';
+        this.endNode = '';
+        this.caminhoPassoAPasso = [];
+        this.custoTotal = null;
+
+        this.nosDisponiveis = Object.keys(this.grafoData);
+        
+        this.updateUIState();
+        this.resetar();
       } catch (err) {
         this.errorMessage = 'Erro ao ler o arquivo JSON.';
         console.error(err);
@@ -156,69 +170,55 @@ export class GrafoComponent {
   }
 
   private gerarGrafoAleatorio(n: number = 10, heuristica: boolean = false): any {
-    const grafo: any = {};
-    const nodes = Array.from({length: n}, (_, i) => `N${i+1}`);
-    
-    const coordenadas: {[key: string]: {x: number, y: number}} = {};
-    if (heuristica) {
+      const grafo: any = {};
+      const nodes = Array.from({ length: n }, (_, i) => `N${i + 1}`);
+
+      const coordenadas: { [key: string]: { x: number; y: number } } = {};
+      if (heuristica) {
+          nodes.forEach(node => {
+              coordenadas[node] = {
+                  x: Math.floor(Math.random() * 500),
+                  y: Math.floor(Math.random() * 500)
+              };
+          });
+      }
+
       nodes.forEach(node => {
-        coordenadas[node] = {
-          x: Math.floor(Math.random() * 500), // 0 a 500
-          y: Math.floor(Math.random() * 500)  // 0 a 500
-        };
-      });
-    }
-
-    nodes.forEach(node => {
-      if (heuristica) {
-        grafo[node] = {
-          arestas: {},
-          coordenadas: coordenadas[node] 
-        };
-      } else {
-        grafo[node] = {};
-      }
-    });
-
-    for (let i = 0; i < nodes.length - 1; i++) {
-      const peso = Math.floor(Math.random() * 50) + 10;
-      
-      if (heuristica) {
-        grafo[nodes[i]].arestas[nodes[i+1]] = peso;
-        grafo[nodes[i+1]].arestas[nodes[i]] = peso;
-      } else {
-        grafo[nodes[i]][nodes[i+1]] = peso;
-        grafo[nodes[i+1]][nodes[i]] = peso;
-      }
-    }
-
-    nodes.forEach(node => {
-      nodes.forEach(target => {
-        if (node !== target && Math.random() > 0.6) { // 40% de chance
-          let jaExiste = false;
-          
+          grafo[node] = {
+              n_arestas: 0, 
+              arestas: {}
+          };
           if (heuristica) {
-            jaExiste = grafo[node].arestas[target] !== undefined;
-          } else {
-            jaExiste = grafo[node][target] !== undefined;
+              grafo[node].coordenadas = coordenadas[node];
           }
-          
-          if (!jaExiste) {
-            const peso = Math.floor(Math.random() * 50) + 10;
-            
-            if (heuristica) {
-              grafo[node].arestas[target] = peso;
-              grafo[target].arestas[node] = peso;
-            } else {
-              grafo[node][target] = peso;
-              grafo[target][node] = peso;
-            }
-          }
-        }
       });
-    });
 
-    return grafo;
+      for (let i = 0; i < nodes.length - 1; i++) {
+          const peso = Math.floor(Math.random() * 50) + 10;
+          const noAtual = nodes[i];
+          const proximoNo = nodes[i + 1];
+
+          grafo[noAtual].arestas[proximoNo] = peso;
+          grafo[proximoNo].arestas[noAtual] = peso;
+      }
+
+      nodes.forEach(node => {
+          nodes.forEach(target => {
+              if (node !== target && grafo[node].arestas[target] === undefined) {
+                  if (Math.random() > 0.6) {
+                      const peso = Math.floor(Math.random() * 50) + 10;
+                      grafo[node].arestas[target] = peso;
+                      grafo[target].arestas[node] = peso;
+                  }
+              }
+          });
+      });
+
+      nodes.forEach(node => {
+          grafo[node].n_arestas = Object.keys(grafo[node].arestas).length;
+      });
+
+      return grafo;
   }
 
   public calcularHeuristica(grafo: any, destino: string): any {
@@ -244,8 +244,6 @@ export class GrafoComponent {
     
     return grafoComHeuristica;
   }
-
-
 
   onGraphReady(): void {
     this.isGraphReady = true;
