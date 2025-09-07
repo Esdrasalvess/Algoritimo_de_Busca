@@ -4,7 +4,7 @@
 
 Uma aplicação web interativa para visualização e comparação de algoritmos de busca cega e informada, permitindo ao usuário encontrar o caminho de menor custo em um grafo de forma dinâmica.
 
-**Acesse a aplicação em produção:** <https://buscas.up.railway.app//>
+**Acesse a aplicação em produção:** <https://buscas.up.railway.app/>
 
 ---
 
