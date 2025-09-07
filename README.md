@@ -1,8 +1,139 @@
-# Simulador de Algoritmo de Busca - Dijkstra
+# Simulador de Algoritmos de Busca em Grafos
 
-Este projeto é um ambiente de simulação para estudo e aplicação de algoritmos de busca em grafos, desenvolvido como parte da atividade prática do Bloco Formativo 2 da disciplina de Inteligência Artificial.  
+[![Java](https://img.shields.io/badge/Java-17+-orange.svg)](https://www.java.com) [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-brightgreen.svg)](https://spring.io/projects/spring-boot) [![Angular](https://img.shields.io/badge/Angular-17-red.svg)](https://angular.io) [![Status](https://img.shields.io/badge/status-concluído-blue.svg)](https://github.com)
 
-O foco principal do projeto foi a implementação do **algoritmo de Dijkstra**, também conhecido como busca de custo uniforme, que garante sempre o caminho de menor custo entre dois nós em um grafo.
+Uma aplicação web interativa para visualização e comparação de algoritmos de busca cega e informada, permitindo ao usuário encontrar o caminho de menor custo em um grafo de forma dinâmica.
+
+**Acesse a aplicação em produção:** <https://buscas.up.railway.app//>
+
+---
+
+## ✨ Funcionalidades Principais
+
+* **Visualização Interativa:** Renderiza grafos a partir de arquivos JSON utilizando D3.js, com um layout dirigido por força que melhora a legibilidade.
+* **Seleção de Algoritmos:** Permite ao usuário escolher entre diferentes algoritmos de busca:
+    * **Busca Cega:** Dijkstra
+    * **Busca Informada:** Busca Gulosa, A\* (A-Estrela) e A\* Ponderado.
+* **Animação de Resultados:** Destaca e anima o caminho encontrado, mostrando o percurso passo a passo.
+* **Seleção Dinâmica:** O usuário pode selecionar os nós de origem e destino diretamente na interface.
+* **Cálculo de Custo:** Exibe o custo total do caminho encontrado pelo algoritmo.
+* **Arquitetura Desacoplada:** Backend (API RESTful) e Frontend (Single Page Application) completamente independentes.
+
+## 🛠️ Tecnologias Utilizadas
+
+### **Backend**
+
+* **Java 17**
+* **Spring Boot 3**
+* **Maven** (Gerenciador de Dependências)
+
+### **Frontend**
+
+* **Angular 17**
+* **TypeScript**
+* **D3.js** (Para visualização dos grafos)
+
+## 🚀 Como Executar o Projeto
+
+Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
+
+### **Pré-requisitos**
+
+* **Java 17+** (JDK)
+* **Apache Maven**
+* **Node.js** e **npm**
+* **Angular CLI** (`npm install -g @angular/cli`)
+
+### **1. Clonar o Repositório**
+
+```bash
+git clone <URL_DO_SEU_REPOSITORIO>
+cd <NOME_DA_PASTA_DO_PROJETO>
+```
+
+### **2. Executar o Backend (API)
+
+Navegue até a pasta do backend e execute o comando do Maven para iniciar a aplicação Spring Boot.
+
+```bash
+# Assumindo que a pasta do backend está na raiz do projeto
+cd <PASTA_DO_BACKEND>
+mvn spring-boot:run
+```
+
+### **3. Executar o Frontend (Interface)
+
+Em outro terminal, navegue até a pasta do frontend, instale as dependências e inicie o servidor de desenvolvimento do Angular.
+
+```bash
+# Assumindo que a pasta do frontend está na raiz do projeto
+cd <PASTA_DO_FRONTEND>
+npm install
+ng serve
+```
+    A aplicação estará acessível em http://localhost:4200.
+
+
+## 📖 Uso da API
+
+O principal endpoint do sistema é responsável por processar a busca. Ele recebe a origem, o destino e o algoritmo a ser utilizado.
+
+    URL: /labirinto/resolver
+
+    Método: POST
+
+    Headers: Content-Type: application/json
+
+Exemplo de Corpo da Requisição (Request Body)
+
+O corpo da requisição deve especificar a origem, o destino e o algoritmo. Para o a_estrela_ponderado, o campo peso é opcional (padrão 1.5).
+
+```JSON
+{
+    "origem": "Arad",
+    "destino": "Bucareste",
+    "algoritmo": "a_estrela_ponderado",
+    "peso": 2.0
+}
+```
+Valores possíveis para algoritmo: dijkstra, gulosa, a_estrela, a_estrela_ponderado.
+
+Exemplo de Corpo da Resposta (Response Body)
+
+A API retorna o caminho detalhado, passo a passo, e o custo total da solução encontrada.
+
+```JSON
+{
+    "noInicio": "Arad",
+    "noFim": "Bucareste",
+    "custoTotal": 418,
+    "caminhoPassoAPasso": [
+        {
+            "de": "Arad",
+            "para": "Sibiu",
+            "custo": 140
+        },
+        {
+            "de": "Sibiu",
+            "para": "Rimnicu Vilcea",
+            "custo": 80
+        },
+        {
+            "de": "Rimnicu Vilcea",
+            "para": "Pitesti",
+            "custo": 97
+        },
+        {
+            "de": "Pitesti",
+            "para": "Bucareste",
+            "custo": 101
+        }
+    ]
+}
+
+```
+
+## 👨‍💻 Autores
 
 1º Maria Letícia Almeida Gonçalves
 Vitória da Conquista , Bahia
@@ -11,79 +142,3 @@ leticiaw.g.a@gmail.com
 2º Esdrás Alves dos Santos
 Vitória da Conquista , Bahia
 esdrasalvesdossantos2002@gmail.com
-
-
----
-
-## 🔹 Objetivo do Projeto
-
-O objetivo desta atividade foi criar um ambiente completo e modular que permitisse:
-
-- Testar e visualizar algoritmos de busca em grafos.
-- Trabalhar com grafos dinâmicos carregados de arquivos JSON.
-- Oferecer uma API que permita a conexão com qualquer frontend ou sistema externo.
-- Mostrar o caminho passo a passo, o custo total e animar visualmente os resultados.
-  
-O algoritmo de Dijkstra foi escolhido por sua relevância prática e capacidade de encontrar sempre a solução ótima em termos de custo acumulado, sendo uma base sólida para futuras implementações de outros algoritmos de busca.
-
-
-## 🔹 Estrutura do Sistema
-
-O sistema foi dividido em **backend** e **frontend**, de forma modular e escalável.
-
-### Backend
-
-- **Linguagem:** Java 17  
-- **Framework:** Spring Boot 3.5.4  
-- **Função:** Recebe grafos em JSON, executa o algoritmo de busca e retorna os resultados via API REST.
-
-#### Estrutura de pastas:
-
-- **Rota `/labirinto` (GET)**: Retorna o grafo carregado.  
-- **Rota `/labirinto/resolver` (POST)**: Recebe nós inicial e final e retorna o caminho ótimo com base no grafo atual.  
-- **Rota `/labirinto/resolver-com-json` (POST)**: Recebe um grafo JSON customizado e retorna o caminho ótimo.
-
-Essa estrutura permite que o backend funcione como uma **API modular**, que pode ser consumida por qualquer frontend ou sistema que envie JSONs compatíveis.
-
-
-### Frontend
-
-- **Linguagem:** TypeScript  
-- **Framework:** Angular 17  
-- **Função:** Interface gráfica interativa que permite:
-  - Upload de arquivos JSON contendo grafos.
-  - Seleção de nós inicial e final.
-  - Exibição do caminho passo a passo.
-  - Animação do caminho encontrado.
-  - Reset da animação.
-
-#### Estrutura de pastas:
-
-
-- O frontend consome a API de forma genérica, permitindo que qualquer aplicação compatível com JSON utilize o backend.
-
-
-### Arquivos de Entrada
-
-Os grafos são representados em JSON, o que facilita:
-
-- Alterar e testar diferentes cenários de busca.
-- Mapear a estrutura de nós e arestas de forma clara.
-
-**Exemplo de JSON:**
-
-{
-  "Arad": { "Zerind": 75, "Timisoara": 118, "Sibiu": 140 },
-  "Zerind": { "Arad": 75, "Oradea": 71 },
-  "Oradea": { "Zerind": 71, "Sibiu": 151 },
-  "Timisoara": { "Arad": 118, "Lugoj": 111 },
-  "Lugoj": { "Timisoara": 111, "Mehadia": 70 },
-  "Mehadia": { "Lugoj": 70, "Drobeta": 75 },
-  "Drobeta": { "Mehadia": 75, "Craiova": 120 },
-}
-
-## Fluxo sistema 
-[Arquivo JSON] → [Backend Java / Spring Boot] → [Algoritmo Dijkstra] → [API REST] → [Frontend Angular] → [Usuário]
-
-## Sistema em produção
-https://front-production-dd9b.up.railway.app/
